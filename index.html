@@ -109,18 +109,23 @@
         var id_number = window.prompt("Enter record id", "");
         var endPoint = document.getElementById("endpoint").value;
         endPoint = endPoint + "/" + id_number
+
         fetch(endPoint)
-        .then(response => response.json())
-        .then(data => {
+        .then(response => {
+          if (response.status != 200) {
+            var test =  "Network Error: " + response.status;
+            document.getElementById("output").innerHTML = test;
+            return;
+          }
+        response.json().then(data => {
           var stringified_data = JSON.stringify(data);
           var test  = document.getElementById("output");
           test.textContent = stringified_data;
-        })
+        });
+      })
         .catch((error) => {
-          var stringified_error = JSON.strinify(error);
-          test.textContent = stringified_error;
+          document.getElementById("output").innerHTML = error;
         })
-
       }
 
       // This function should use fetch to create one entry in the given endpoint.
