@@ -83,21 +83,35 @@
       // From the 4 CRUD actions, this is the READ action, and uses the GET http method.
       // The main difference from fetchOne() will be the URL you request from; check
       // the writeup to view the URL pattern for fetch one and fetch all
-      function fetchAll() {
+      function fetchAll() { 
         document.getElementById("recordForm").style.display = "none";
 
         var endPoint = document.getElementById("endpoint").value;
         fetch(endPoint)
-        .then(response => response.json())
-        .then(data => {
-          var stringified_data = JSON.stringify(data);
-          var test  = document.getElementById("output");
-          test.textContent = stringified_data;
+        .then(response => {
+          if(response.status != 200){
+            var test = "Network Error: " + response.status;
+            document.getElementById("output").innerHTML = test;
+            return;
+          }
+          response.json().then(data => {
+
+            var stringified_data = JSON.stringify(data);
+            var test  = document.getElementById("output");
+            if(data.length  == 0){
+              test = "Network Error: 404";
+              document.getElementById("output").innerHTML = test;
+              return;
+            }
+
+            test.textContent = stringified_data;
+          });
         })
         .catch((error) => {
           document.getElementById("output").innerHTML = error;
         })
       }
+
 
       // This function should fetch one entry from the given endpoint.
       // From the 4 CRUD actions, this is the READ action, and uses the GET http method.
@@ -126,6 +140,7 @@
         .catch((error) => {
           document.getElementById("output").innerHTML = error;
         })
+
       }
 
       // This function should use fetch to create one entry in the given endpoint.
@@ -151,17 +166,23 @@
               "Content-Type" : "application/json"
             },
           })
-          .then(response=>response.json())
-          .then(data=> {
+          .then(response=>{
+            if (response.status != 200) {
+              var test =  "Network Error: " + response.status;
+              document.getElementById("output").innerHTML = test;
+              return;
+            }
+          response.json().then(data=> {
             var stringified_data = JSON.stringify(data);
             var test  = document.getElementById("output");
             test.textContent = stringified_data;
-          })
-          .catch((error) => {
-            document.getElementById("output").innerHTML = error;
+          });
+        })
+          .catch(function(err) {
+            document.getElementById("output").value = err;
+                return;
           })
         }
-      }
 
       // This function should use fetch to update one existing entry in the given endpoint.
       // From the 4 CRUD actions, this is the UPDATE action, and uses the PUT http method.
@@ -190,17 +211,23 @@
               "Content-Type" : "application/json"
             },
           })
-          .then(response=>response.json())
-          .then(data=> {
+          .then(response=> {
+            if(response.status != 200) {
+              var test =  "Network Error: " + response.status;
+              document.getElementById("output").innerHTML = test;
+              return;
+            }
+          response.json().then(data=> {
             var stringified_data = JSON.stringify(data);
             var test  = document.getElementById("output");
             test.textContent = stringified_data;
-          })
-          .catch((error) => {
-            document.getElementById("output").appendChild(error);
+          });
+        })
+        .catch((err) => {
+            document.getElementById("output").innerHTML = err;
+                return;
           })
         }
-      }
 
       // This function should use fetch to delete one existing entry in the given endpoint.
       // From the 4 CRUD actions, this is the DELETE action, and uses the DELETE http method.
@@ -216,17 +243,24 @@
         fetch(endPoint, {
           method : "DELETE"
         })
-        .then(response => response.json())
-        .then(data => {
-          var stringified_data = document.createElement("string");
-          stringified_data.innerText = JSON.stringify(data);
-          var test  = document.getElementById("output");
-          test.innerHTML = "";
-          test.appendChild(stringified_data);
+        .then(response => {
+          if(response.status != 200){
+            var test = "Network Error: " + response.status;
+            document.getElementById("output").innerHTML = test;
+            return;
+          }
+          response.json().then(data => {
+            var stringified_data = document.createElement("string");
+            stringified_data.innerText = JSON.stringify(data);
+            var test  = document.getElementById("output");
+            test.innerHTML = "";
+            test.appendChild(stringified_data);
+          });
         })
         .catch((error) => {
-          document.getElementById("output").innerHTML = error;
-        }) 
+            document.getElementById("output").innerHTML = error;
+                return;
+          })
       }
 
       window.addEventListener('DOMContentLoaded', () => {
