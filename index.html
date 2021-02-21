@@ -170,11 +170,6 @@
             },
           })
           .then(response=>{
-            if (response.status != 200) {
-              var test =  "Network Error: " + response.status;
-              document.getElementById("output").innerHTML = test;
-              return;
-            }
           response.json().then(data=> {
             var stringified_data = JSON.stringify(data);
             var test  = document.getElementById("output");
