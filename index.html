@@ -85,6 +85,7 @@
       // the writeup to view the URL pattern for fetch one and fetch all
       function fetchAll() { 
         document.getElementById("recordForm").style.display = "none";
+        document.getElementById("recordIDcontainer").style.display = "none";
 
         var endPoint = document.getElementById("endpoint").value;
         fetch(endPoint)
@@ -119,6 +120,7 @@
       // the writeup to view the URL pattern for fetch one and fetch all
       function fetchOne() {
         document.getElementById("recordForm").style.display = "none";
+        document.getElementById("recordIDcontainer").style.display = "none";
 
         var id_number = window.prompt("Enter record id", "");
         var endPoint = document.getElementById("endpoint").value;
@@ -149,6 +151,7 @@
       // the writeup to view the URL pattern for create and update
       function createRecord(test) {
         document.getElementById("recordForm").style.display = "inline";
+        document.getElementById("recordIDcontainer").style.display = "none";
         
         if (test == "submit"){
           var author_id = document.getElementById("author").value;
@@ -183,14 +186,13 @@
                 return;
           })
         }
+      }
 
       // This function should use fetch to update one existing entry in the given endpoint.
       // From the 4 CRUD actions, this is the UPDATE action, and uses the PUT http method.
       // The main difference from createRecord() will be the URL you send data to; check
       // the writeup to view the URL pattern for create and update
       function updateRecord(test) {
-        document.getElementById("recordForm").style.display = "none";
-
         document.getElementById("recordForm").style.display = "inline";
         document.getElementById("recordIDcontainer").style.display = "inline";
         
@@ -228,6 +230,7 @@
                 return;
           })
         }
+      }
 
       // This function should use fetch to delete one existing entry in the given endpoint.
       // From the 4 CRUD actions, this is the DELETE action, and uses the DELETE http method.
@@ -236,6 +239,7 @@
       // delete all, only delete one.
       function deleteRecord() {
         document.getElementById("recordForm").style.display = "none";
+        document.getElementById("recordIDcontainer").style.display = "none";
 
         var id_number = window.prompt("Enter record id", "");
         var endPoint = document.getElementById("endpoint").value;
